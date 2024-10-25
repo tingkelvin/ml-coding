@@ -17,4 +17,4 @@ jobs:
       - name: Train model
         run: |
           cd custom
-          python3 -m trainer.task
+          python -m trainer.task
