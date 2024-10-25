@@ -3,11 +3,28 @@ on: [push]
 jobs:
   run:
     runs-on: ubuntu-latest
+    env: # Or as an environment variable
+      PROJECT_ID: ${{ secrets.PROJECT_ID }}
+      LOCATION: ${{ secrets.LOCATION }}
+      BUCKET: ${{ secrets.BUCKET }}
+      DISPLAY_NAME: ${{ secrets.DISPLAY_NAME }}
+      CONTAINER_URI: ${{ secrets.CONTAINER_URI }}
+      TRAIN_VERSION: ${{ secrets.TRAIN_VERSION }}
+      TRAIN_IMAGE: ${{ secrets.TRAIN_IMAGE }}
+      MODEL_DIR: ${{ secrets.MODEL_DIR }}
+      DATASET_DIR: ${{ secrets.DATASET_DIR }}
+            
     steps:
       - uses: actions/checkout@v3
       - uses: 'google-github-actions/auth@v2'
         with:
-          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
+          credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}'
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+      - name: Run tunner
+        run: |
+          python hp_tunning_runner.py
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3
       #   with:
