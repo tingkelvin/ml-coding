@@ -26,4 +26,4 @@ jobs:
           MODEL_DIR: ${{ secrets.MODEL_DIR }}
           DATASET_DIR: ${{ secrets.DATASET_DIR }}
         run: |
-          python hp_tunning_runner.py
+          echo This is the database URL: $LOCATION
