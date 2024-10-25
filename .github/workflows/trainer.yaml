@@ -1,7 +1,7 @@
 name: your-workflow-name
 on: [push]
 jobs:
-  run:
+  trainer-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
