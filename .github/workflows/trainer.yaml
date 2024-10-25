@@ -1,4 +1,4 @@
-name: your-workflow-name
+name: Trainer-Test
 on: [push]
 jobs:
   trainer-test:
