@@ -1,14 +1,16 @@
 name: Tunner-Test
 on: [push]
 jobs:
-  trainer-test:
-    uses: ./.github/workflows/trainer.yml
   tunner-test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      
+
+      - name: Test Trainer Task
+        working-directory: ./custom
+        run: pip install -e . && python -m trainer.task --run_locally=True
+        
       - name: Create tar file
         run: |
           tar cvf trainer_boston.tar custom
