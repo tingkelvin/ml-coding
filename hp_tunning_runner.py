@@ -13,6 +13,7 @@ timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 class Hp_Tunning_Runner:
     def __init__(self):
+        print(os.environ)
         aiplatform.init(
             project=PROJECT_ID,
             location=LOCATION,
