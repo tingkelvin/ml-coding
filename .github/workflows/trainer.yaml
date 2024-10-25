@@ -15,12 +15,10 @@ jobs:
       - name: Get git diff
         id: getter
         run: |
-          GIT_DIFF="$(echo $(git diff --name-only remotes/origin/${GITHUB_HEAD_REF}))"
+          GIT_DIFF="$(echo $(git diff --name-only origin/main...origin/${{ github.head_ref }}))"
           echo "::set-output name=diff::$GIT_DIFF"
 
   run_trainer:
-    runs-on: ubuntu-latest
-    # optionally use a convenient Ubuntu LTS + DVC + CML image
     container: asia-docker.pkg.dev/vertex-ai/training/xgboost-cpu.1-6:latest
     steps:
       - uses: actions/checkout@v3
