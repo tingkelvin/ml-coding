@@ -1,21 +1,23 @@
-import os
-from dotenv import load_dotenv
+from datetime import datetime
+# config.py
 
-load_dotenv()
-
-PROJECT_ID = os.environ.get('PROJECT_ID')
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+PROJECT_ID = "ml-coding-439503"
 LOCATION = "australia-southeast1"
-BUCKET= os.environ.get('BUCKET')
-TRAIN_VERSION = os.environ.get('TRAIN_VERSION')
-MODEL_DIR = os.environ.get('MODEL_DIR')
-DATASET_DIR = os.environ.get('DATASET_DIR')
-DISPLAY_NAME = os.environ.get('DISPLAY_NAME')
-CONTAINER_URI = os.environ.get('CONTAINER_URI')
+BUCKET = "gs://ml-coding"
+DISPLAY_NAME = f"xgboost_model"
+CONTAINER_URI = f"gcr.io/{PROJECT_ID}/xgboost-training:latest"
+
 # Version configurations
-TRAIN_VERSION="xgboost-cpu.1-1"
+TRAIN_VERSION = "xgboost-cpu.1-1"
 
 # Image URIs
-TRAIN_IMAGE = os.environ.get('TRAIN_IMAGE')
+TRAIN_IMAGE = "gcr.io/cloud-aiplatform/training/{}:latest".format(TRAIN_VERSION)
+
+
+# Directory configurations
+MODEL_DIR = "{}/aiplatform-custom-job".format(BUCKET)
+DATASET_DIR = "gs://boston_housing_data"
 
 # Command line arguments
 CMDARGS = [
