@@ -17,7 +17,7 @@ SEED=123
 def get_data(test_size=0.2, random_state=SEED):
     # Check Missing data
     if not args.run_locally:
-        logging.info("Copy training data from gs bucket: {}, {}".format(args.dataset_X_train_url, args.dataset_y_test_url))
+        logging.info("Copy training data from gs bucket: {}, {}".format(args.dataset_X_train_url, args.dataset_y_train_url))
         # gsutil outputs everything to stderr. Hence, the need to divert it to stdout.
         subprocess.check_call(['gsutil', 'cp', args.dataset_X_train_url, 'X_train.npy' ], stderr=sys.stdout)
         subprocess.check_call(['gsutil', 'cp', args.dataset_y_train_url, 'y_train.npy'], stderr=sys.stdout)
