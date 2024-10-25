@@ -2,9 +2,7 @@ name: tunner
 on: [push]
 jobs:
   run:
-
     runs-on: ubuntu-latest
-            
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,11 +20,17 @@ jobs:
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
 
-      - name: Up load folder
+      - name: Upload folder
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
           path: 'trainer_boston.tar.gz'
           destination: 'ml-coding'
+
+      - name: Run hyperparameter tunning
+        run: |
+          python hp_tunning_runner.py
+
+          
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3
       #   with:
