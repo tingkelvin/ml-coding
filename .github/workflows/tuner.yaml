@@ -26,4 +26,4 @@ jobs:
           MODEL_DIR: ${{ secrets.MODEL_DIR }}
           DATASET_DIR: ${{ secrets.DATASET_DIR }}
         run: |
-          echo This is the database URL: $LOCATION
+          echo "This is the database URL: $LOCATION"
