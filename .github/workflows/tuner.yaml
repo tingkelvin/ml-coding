@@ -2,7 +2,7 @@ name: Tunner-Test
 on: [push]
 jobs:
   trainer-test:
-    uses: trainer.yml
+    uses: ./.github/workflows/trainer.yml
   tunner-test:
     runs-on: ubuntu-latest
     steps:
