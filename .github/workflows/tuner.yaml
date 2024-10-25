@@ -4,10 +4,27 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: 'google-github-actions/auth@v2'
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Create tar file
+        run: |
+          tar cvf custom.tar custom
+
+      - name: Compress tar file
+        run: |
+          gzip custom.tar
+          
+      - name: Google authenication
+        uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
+
+      - id: Up load folder
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: 'custom.tar.gz'
+          destination: 'gs://ml-coding/trainer_boston.tar.gz'
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3
       #   with:
