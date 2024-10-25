@@ -1,4 +1,4 @@
-name: Trainer-Test
+name: trainer-test
 on: [workflow_call]
 jobs:
   trainer-test:
