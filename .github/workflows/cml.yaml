@@ -16,4 +16,4 @@ jobs:
       #     python-version: '3.x'
       - name: Test Trainer Task
         working-directory: ./custom
-        run: python -m trainer.task
+        run: python3 -m trainer.task
