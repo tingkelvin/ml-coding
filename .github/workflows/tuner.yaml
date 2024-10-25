@@ -11,11 +11,11 @@ jobs:
 
       - name: Create tar file
         run: |
-          tar cvf custom.tar custom
+          tar cvf trainer_boston.tar custom
 
       - name: Compress tar file
         run: |
-          gzip custom.tar
+          gzip trainer_boston.tar
           
       - name: Google authenication
         uses: 'google-github-actions/auth@v2'
@@ -25,8 +25,8 @@ jobs:
       - name: Up load folder
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: 'custom.tar.gz'
-          destination: 'ml-coding/trainer_boston.tar.gz'
+          path: 'trainer_boston.tar.gz'
+          destination: 'ml-coding'
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3
       #   with:
