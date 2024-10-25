@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 PROJECT_ID = os.environ.get('PROJECT_ID')
-LOCATION = os.environ.get('LOCATION')
+LOCATION = "australia-southeast1"
 BUCKET= os.environ.get('BUCKET')
 TRAIN_VERSION = os.environ.get('TRAIN_VERSION')
 MODEL_DIR = os.environ.get('MODEL_DIR')
