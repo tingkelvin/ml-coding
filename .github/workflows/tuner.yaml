@@ -22,7 +22,7 @@ jobs:
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
 
-      - id: Up load folder
+      - name: Up load folder
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
           path: 'custom.tar.gz'
