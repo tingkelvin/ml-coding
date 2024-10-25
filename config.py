@@ -3,19 +3,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-PROJECT_ID = os.environ('PROJECT_ID')
-LOCATION = os.environ('LOCATION')
-BUCKET= os.environ('BUCKET')
-TRAIN_VERSION = os.environ('TRAIN_VERSION')
-MODEL_DIR = os.environ('MODEL_DIR')
-DATASET_DIR = os.environ('DATASET_DIR')
-DISPLAY_NAME = os.environ('DISPLAY_NAME')
-CONTAINER_URI = os.environ('CONTAINER_URI')
+PROJECT_ID = os.environ.get('PROJECT_ID')
+LOCATION = os.environ.get('LOCATION')
+BUCKET= os.environ.get('BUCKET')
+TRAIN_VERSION = os.environ.get('TRAIN_VERSION')
+MODEL_DIR = os.environ.get('MODEL_DIR')
+DATASET_DIR = os.environ.get('DATASET_DIR')
+DISPLAY_NAME = os.environ.get('DISPLAY_NAME')
+CONTAINER_URI = os.environ.get('CONTAINER_URI')
 # Version configurations
 TRAIN_VERSION="xgboost-cpu.1-1"
 
 # Image URIs
-TRAIN_IMAGE = os.environ('TRAIN_IMAGE')
+TRAIN_IMAGE = os.environ.get('TRAIN_IMAGE')
 
 # Command line arguments
 CMDARGS = [
