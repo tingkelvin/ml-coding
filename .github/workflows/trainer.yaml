@@ -1,9 +1,10 @@
 name: your-workflow-name
 on: [push]
+concurrency: dev_stage_environment
 jobs:
   git_diff:
     # Get a list of changed files in the PR for the future analysis
-    runs-on: asia-docker.pkg.dev/vertex-ai/training/xgboost-cpu.1-6:latest
+    runs-on: ubuntu-latest
     outputs:
       diff: ${{ steps.getter.outputs.diff }}
     steps:
