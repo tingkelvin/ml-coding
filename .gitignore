@@ -4,3 +4,4 @@ vertex-ai-key.json
 *.tar.gz
 __pycache__
 custom/trainer/__pycache__
+.env

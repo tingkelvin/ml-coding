@@ -6,6 +6,11 @@ from config import *
 import yaml
 import os
 
+from datetime import datetime
+# config.py
+
+timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
 class Hp_Tunning_Runner:
     def __init__(self):
         aiplatform.init(
@@ -23,7 +28,7 @@ class Hp_Tunning_Runner:
 
         # Job Configurations are loaded in config.py
         custom_job = aiplatform.CustomJob(
-            display_name=DISPLAY_NAME,
+            display_name=f"DISPLAY_NAME_{timestamp}",
             worker_pool_specs=WORKER_POOL_SPEC ,
             staging_bucket=BUCKET,
             base_output_dir=MODEL_DIR
