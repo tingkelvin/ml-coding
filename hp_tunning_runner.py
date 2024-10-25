@@ -101,7 +101,6 @@ class Hp_Tunning_Runner:
 
 # Unit testing
 if __name__ == "__main__":
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertex-ai-key.json"
     runner = Hp_Tunning_Runner()
     runner.create_and_run_hp_tuning_job()
     
