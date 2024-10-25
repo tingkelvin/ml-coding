@@ -15,7 +15,7 @@ jobs:
       - name: Get git diff
         id: getter
         run: |
-          GIT_DIFF="$(echo $(git diff --name-only origin/main...origin/${{ github.head_ref }}))"
+          GIT_DIFF="$(echo $(git diff --name-only origin/main...HEAD))"
           echo "::set-output name=diff::$GIT_DIFF"
 
   run_trainer:
