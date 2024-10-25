@@ -1,7 +1,23 @@
 name: your-workflow-name
 on: [push]
 jobs:
-  run:
+  git_diff:
+    # Get a list of changed files in the PR for the future analysis
+    runs-on: asia-docker.pkg.dev/vertex-ai/training/xgboost-cpu.1-6:latest
+    outputs:
+      diff: ${{ steps.getter.outputs.diff }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Get git diff
+        id: getter
+        run: |
+          GIT_DIFF="$(echo $(git diff --name-only origin/main...origin/${GITHUB_HEAD_REF}))"
+          echo "::set-output name=diff::$GIT_DIFF"
+
+  run_trainer:
     runs-on: ubuntu-latest
     # optionally use a convenient Ubuntu LTS + DVC + CML image
     container: asia-docker.pkg.dev/vertex-ai/training/xgboost-cpu.1-6:latest
@@ -16,4 +32,4 @@ jobs:
       #     python-version: '3.x'
       - name: Test Trainer Task
         working-directory: ./custom
-        run: pip install -e . && python -m trainer.task --run_locally=True
+        run: python -m trainer.task --run_locally=True
