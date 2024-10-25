@@ -1,0 +1,6 @@
+.venv
+vertex-ai-key.json
+*.npy
+*.tar.gz
+__pycache__
+custom/trainer/__pycache__
