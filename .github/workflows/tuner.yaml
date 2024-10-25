@@ -1,32 +1,44 @@
-name: tunner
+name: Tunner-Test
 on: [push]
 jobs:
-  run:
-
+  tunner-test:
     runs-on: ubuntu-latest
-            
     steps:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Test Trainer Task
+        working-directory: ./custom
+        run: pip install -e . && python -m trainer.task --run_locally=True
+        
       - name: Create tar file
         run: |
-          tar cvf custom.tar custom
+          tar cvf trainer_boston.tar custom
 
       - name: Compress tar file
         run: |
-          gzip custom.tar
+          gzip trainer_boston.tar
           
       - name: Google authenication
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
 
-      - id: Up load folder
+      - name: Upload folder
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: 'custom.tar.gz'
-          destination: 'gs://ml-coding/trainer_boston.tar.gz'
+          path: 'trainer_boston.tar.gz'
+          destination: 'ml-coding'
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run hyperparameter tunning
+        run: |
+          python hp_tunning_runner.py
+
+          
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3
       #   with:
