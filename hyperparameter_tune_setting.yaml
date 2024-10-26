@@ -5,7 +5,7 @@ hyperparameter_tune_settings:
   parameter_spec:
     n_estimators:
       min: 3
-      max: 4
+      max: 5
       scale: linear
     max_depth:
       min: 3
