@@ -30,9 +30,13 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Run hyperparameter tunning
+      # - name: Run hyperparameter tunning
+      #   run: |
+      #     python hp_tunning_runner.py
+      
+      - name: Deployment
         run: |
-          python hp_tunning_runner.py
+          python deployment_runner.py
 
           
       # may need to setup NodeJS & Python3 on e.g. self-hosted
