@@ -67,8 +67,17 @@ if __name__ == "__main__":
     # Read the best configuration from the JSON file
     with open(BEST_CONFIG_FILE, 'r') as f:
         best_config = json.load(f)
-    runner.deploy_model_to_endpoint(model_name=best_config.trial_id)
-    predictions = runner.endpoint_predict_sample()
-    print(len(predictions))
-    accuracy = runner.evaluate_mode(predictions=predictions)
-    print(accuracy)
+
+    with open(CURRENT_CONFIG_FILE, 'r') as f:
+        current_config = json.load(f)
+
+    if best_config.metric_value < current_config.metric_value:
+
+        runner.deploy_model_to_endpoint(model_name=best_config.trial_id)
+        predictions = runner.endpoint_predict_sample()
+        print(len(predictions))
+        accuracy = runner.evaluate_mode(predictions=predictions)
+        print(accuracy)
+
+        with open(BEST_CONFIG_FILE, 'w') as f:
+            json.dump(current_config, f, indent=4)
