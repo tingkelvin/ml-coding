@@ -61,8 +61,9 @@ class Deployment_runner:
 
 # Unit testing
 if __name__ == "__main__":
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertex-ai-key.json"
     runner = Deployment_runner()
+
+    subprocess.check_call(['gcloud', 'storage', "cp", f"{BUCKET}/{CURRENT_CONFIG_FILE}", f"{CURRENT_CONFIG_FILE}" ], stderr=sys.stdout)
 
     # Read the best configuration from the JSON file
     with open(BEST_CONFIG_FILE, 'r') as f:
@@ -71,13 +72,17 @@ if __name__ == "__main__":
     with open(CURRENT_CONFIG_FILE, 'r') as f:
         current_config = json.load(f)
 
-    if best_config.metric_value < current_config.metric_value:
-
-        runner.deploy_model_to_endpoint(model_name=best_config.trial_id)
+    if best_config["metric_value"] < current_config["metric_value"]:
+        trail_id = best_config["trial_id"]
+        model = runner.upload_model_sample(
+                            display_name="prediction",
+                            serving_container_image_uri=DEPLOY_IMAGE,
+                            artifact_uri=f"{BUCKET}/aiplatform-custom-job/{trail_id}/model"
+                        )
+        
+        runner.deploy_model_to_endpoint(model_name=model.name)
         predictions = runner.endpoint_predict_sample()
         print(len(predictions))
         accuracy = runner.evaluate_mode(predictions=predictions)
         print(accuracy)
-
-        with open(BEST_CONFIG_FILE, 'w') as f:
-            json.dump(current_config, f, indent=4)
+        subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}" f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)
