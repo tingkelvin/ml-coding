@@ -91,8 +91,8 @@ if __name__ == "__main__":
             runner.deploy_model_to_endpoint(model_name=model.name)
             predictions = runner.endpoint_predict_sample()
             accuracy = runner.evaluate_mode(predictions=predictions)
-            subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}" f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)
+            subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}", f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)
             logging.info("Best configuration file copied to bucket.")
-            
+
     except Exception as e:
         logging.error("An error occurred during the deployment process.", exc_info=e)
