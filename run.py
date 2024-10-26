@@ -6,6 +6,8 @@ from deployment_runner import Deployment_runner
 from config import *
 from delpoyment_config import *
 
+import json
+
 if __name__ == "__main__":
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertex-ai-key.json"
 
@@ -29,14 +31,21 @@ if __name__ == "__main__":
     best_model_id = hp_runner.create_and_run_hp_tuning_job()
 
     # Step 2
-    deployment_runner = Deployment_runner()
-    uploaded_model = deployment_runner.upload_model_sample(
-                display_name="prediction",
-                serving_container_image_uri=DEPLOY_IMAGE,
-                artifact_uri=f"{BUCKET}/aiplatform-custom-job/{best_model_id}/model"
-            )
-    
-    deployment_runner.deploy_model_to_endpoint(model_name=uploaded_model.name)
-    predictions = deployment_runner.endpoint_predict_sample()
-    accuracy = deployment_runner.evaluate_mode(predictions=predictions)
-    print(accuracy)
+    runner = Deployment_runner()
+
+    subprocess.check_call(['gcloud', 'storage', "cp", f"{BUCKET}/{CURRENT_CONFIG_FILE}", f"{CURRENT_CONFIG_FILE}" ], stderr=sys.stdout)
+
+    # Read the best configuration from the JSON file
+    with open(BEST_CONFIG_FILE, 'r') as f:
+        best_config = json.load(f)
+
+    with open(CURRENT_CONFIG_FILE, 'r') as f:
+        current_config = json.load(f)
+
+    if best_config.metric_value < current_config.metric_value:
+        runner.deploy_model_to_endpoint(model_name=best_config.trial_id)
+        predictions = runner.endpoint_predict_sample()
+        print(len(predictions))
+        accuracy = runner.evaluate_mode(predictions=predictions)
+        print(accuracy)
+        subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}" f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)

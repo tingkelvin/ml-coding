@@ -33,15 +33,14 @@ jobs:
       # - name: Run hyperparameter tunning
       #   run: |
       #     python hp_tunning_runner.py
-      
+
       # - name: Deployment
       #   run: |
       #     python deployment_runner.py
 
       - name: Test end point 
         run: |
-          python deployment_runner.py
-
+          python test_endpoint_prediction.py
           
       # may need to setup NodeJS & Python3 on e.g. self-hosted
       # - uses: actions/setup-node@v3

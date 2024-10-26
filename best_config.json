@@ -1,1 +1,1 @@
-{"trial_id": "1", "learning_rate": 0.014142135623730949, "max_depth": 4.0, "n_estimators": 4.0, "subsample": 0.6480740698407861, "metric_value": 5.837389958403233}
+{"trial_id": "1", "learning_rate": 0.014142135623730949, "max_depth": 4.0, "subsample": 4.0, "parameter_3": 0.6480740698407861, "metric_value": 5.837389958403233}
