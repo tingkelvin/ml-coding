@@ -52,47 +52,30 @@ class Deployment_runner:
         except subprocess.CalledProcessError as e:
             logging.error("Error deploying model to endpoint.", exc_info=e)
 
-    def endpoint_predict_sample(self):
-        logging.info("Making predictions from endpoint.")
-        endpoint = aiplatform.Endpoint(str(END_POINT))
-        test_data = np.load("data/X_test.npy")
-        prediction = endpoint.predict(instances=test_data.tolist())
-        logging.info("Predictions made successfully.")
-        return prediction.predictions
-
-    def evaluate_mode(self, predictions):
-        logging.info("Evaluating model.")
-        grand_truth = np.load("data/y_test.npy")
-        mse = mean_squared_error(grand_truth, predictions)
-        logging.info(f"Model evaluation complete. MSE: {mse}")
 
 # Unit testing
 if __name__ == "__main__":
     runner = Deployment_runner()
 
-    try:
-        subprocess.check_call(['gcloud', 'storage', "cp", f"{BUCKET}/{CURRENT_CONFIG_FILE}", f"{CURRENT_CONFIG_FILE}" ], stderr=sys.stdout)
 
-        # Read the best configuration from the JSON file
-        with open(BEST_CONFIG_FILE, 'r') as f:
-            best_config = json.load(f)
+    subprocess.check_call(['gcloud', 'storage', "cp", f"{BUCKET}/{CURRENT_CONFIG_FILE}", f"{CURRENT_CONFIG_FILE}" ], stderr=sys.stdout)
 
-        with open(CURRENT_CONFIG_FILE, 'r') as f:
-            current_config = json.load(f)
+    # Read the best configuration from the JSON file
+    with open(BEST_CONFIG_FILE, 'r') as f:
+        best_config = json.load(f)
 
-        if best_config["metric_value"] < current_config["metric_value"]:
-            trail_id = best_config["trial_id"]
-            model = runner.upload_model_sample(
-                                display_name="prediction",
-                                serving_container_image_uri=DEPLOY_IMAGE,
-                                artifact_uri=f"{BUCKET}/aiplatform-custom-job/{trail_id}/model"
-                            )
-            
-            runner.deploy_model_to_endpoint(model_name=model.name)
-            predictions = runner.endpoint_predict_sample()
-            accuracy = runner.evaluate_mode(predictions=predictions)
-            subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}", f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)
-            logging.info("Best configuration file copied to bucket.")
+    with open(CURRENT_CONFIG_FILE, 'r') as f:
+        current_config = json.load(f)
 
-    except Exception as e:
-        logging.error("An error occurred during the deployment process.", exc_info=e)
+    if best_config["metric_value"] < current_config["metric_value"]:
+        trail_id = best_config["trial_id"]
+        model = runner.upload_model_sample(
+                            display_name="prediction",
+                            serving_container_image_uri=DEPLOY_IMAGE,
+                            artifact_uri=f"{BUCKET}/aiplatform-custom-job/{trail_id}/model"
+                        )
+        
+        runner.deploy_model_to_endpoint(model_name=model.name)
+        subprocess.check_call(['gcloud', 'storage', "cp",  f"{BEST_CONFIG_FILE}", f"{BUCKET}/{CURRENT_CONFIG_FILE}"], stderr=sys.stdout)
+        logging.info("Best configuration file copied to bucket.")
+
