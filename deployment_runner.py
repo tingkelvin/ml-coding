@@ -1,6 +1,7 @@
 import subprocess
 import sys
 import os
+import json
 
 import numpy as np
 
@@ -63,15 +64,10 @@ if __name__ == "__main__":
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "vertex-ai-key.json"
     runner = Deployment_runner()
 
-    # best_model_id = 1
-    # model = runner.upload_model_sample(
-    #                     display_name="prediction",
-    #                     serving_container_image_uri=DEPLOY_IMAGE,
-    #                     artifact_uri=f"{BUCKET}/aiplatform-custom-job/{best_model_id}/model"
-    #                 )
-    
-    # runner.deploy_model_to_endpoint(model_name=model.name)
-    
+    # Read the best configuration from the JSON file
+    with open(BEST_CONFIG_FILE, 'r') as f:
+        best_config = json.load(f)
+    runner.deploy_model_to_endpoint(model_name=best_config.trial_id)
     predictions = runner.endpoint_predict_sample()
     print(len(predictions))
     accuracy = runner.evaluate_mode(predictions=predictions)

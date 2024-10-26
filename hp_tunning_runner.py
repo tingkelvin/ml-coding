@@ -1,10 +1,11 @@
-# hp_tuning_runner.py
+import yaml
+import json
+import os
+
 from google.cloud import aiplatform
 from google.cloud.aiplatform import hyperparameter_tuning as hpt
 from typing import Dict
 from config import *
-import yaml
-import os
 
 from datetime import datetime
 # config.py
@@ -13,7 +14,6 @@ timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
 
 class Hp_Tunning_Runner:
     def __init__(self):
-        print(os.environ)
         aiplatform.init(
             project=PROJECT_ID,
             location=LOCATION,
@@ -61,9 +61,8 @@ class Hp_Tunning_Runner:
         best = (None, None, None, None, None, float('inf'))
         # Iterate through the trails and update the best configuration
         for trial in hp_job.trials:
-            print(trial)
             # Keep track of the best outcome
-            if float(trial.final_measurement.metrics[0].value) < best[5]:
+            if trial.state == "SUCCEEDED" and float(trial.final_measurement.metrics[0].value) < best[5]:
                 best = (
                     trial.id,
                     float(trial.parameters[0].value),
@@ -73,11 +72,17 @@ class Hp_Tunning_Runner:
                     float(trial.final_measurement.metrics[0].value),
                 )
 
-
-        # print details of the best configuration
-        print(best)
+        # Write the best configuration to a JSON file
+        with open(BEST_CONFIG_FILE, 'w') as f:
+            json.dump({
+                'trial_id': best[0],
+                'learning_rate': best[1],
+                'max_depth': best[2],
+                'n_estimators': best[3],
+                'subsample': best[4],
+                'metric_value': best[5]
+            }, f)
         
-        return best[0]
 
     def parse_hyperparameter_config(self, config_path="hyperparameter_tune_setting.yaml") -> Dict:
         with open(config_path, 'r') as file:

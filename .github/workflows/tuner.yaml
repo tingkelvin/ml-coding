@@ -14,10 +14,6 @@ jobs:
       - name: Create tar file
         run: |
           tar cvf trainer_boston.tar custom
-
-      - name: Compress tar file
-        run: |
-          gzip trainer_boston.tar
           
       - name: Google authenication
         uses: 'google-github-actions/auth@v2'
@@ -27,7 +23,7 @@ jobs:
       - name: Upload folder
         uses: 'google-github-actions/upload-cloud-storage@v2'
         with:
-          path: 'trainer_boston.tar.gz'
+          path: 'trainer_boston.tar'
           destination: 'ml-coding'
 
       - name: Install dependencies

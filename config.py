@@ -14,7 +14,6 @@ TRAIN_VERSION = "xgboost-cpu.1-1"
 # Image URIs
 TRAIN_IMAGE = "gcr.io/cloud-aiplatform/training/{}:latest".format(TRAIN_VERSION)
 
-
 # Directory configurations
 MODEL_DIR = "{}/aiplatform-custom-job".format(BUCKET)
 DATASET_DIR = "gs://boston_housing_data"
@@ -26,6 +25,9 @@ CMDARGS = [
     "--dataset_X_val_url=" + DATASET_DIR + "/X_val.npy",
     "--dataset_y_val_url=" + DATASET_DIR + "/y_val.npy",
 ]
+
+# Config for best model
+BEST_CONFIG_FILE = 'best_config.json'
 
 # Worker pool specifications
 WORKER_POOL_SPEC = [
