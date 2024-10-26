@@ -28,6 +28,7 @@ CMDARGS = [
 
 # Config for best model
 BEST_CONFIG_FILE = 'best_config.json'
+CURRENT_CONFIG_FILE = 'current_config.json'
 
 # Worker pool specifications
 WORKER_POOL_SPEC = [

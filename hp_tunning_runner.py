@@ -57,12 +57,12 @@ class Hp_Tunning_Runner:
         # Run the job
         hp_job.run()
 
-        # Initialize a tuple to identify the best configuration
         best = (None, None, None, None, None, float('inf'))
         # Iterate through the trails and update the best configuration
         for trial in hp_job.trials:
+            print(trial)
             # Keep track of the best outcome
-            if trial.state == "SUCCEEDED" and float(trial.final_measurement.metrics[0].value) < best[5]:
+            if float(trial.final_measurement.metrics[0].value) < best[5]:
                 best = (
                     trial.id,
                     float(trial.parameters[0].value),
@@ -72,16 +72,21 @@ class Hp_Tunning_Runner:
                     float(trial.final_measurement.metrics[0].value),
                 )
 
+        # Print details of the best configuration
+        print("Best Configuration:", best)
+
         # Write the best configuration to a JSON file
         with open(BEST_CONFIG_FILE, 'w') as f:
             json.dump({
                 'trial_id': best[0],
                 'learning_rate': best[1],
                 'max_depth': best[2],
-                'n_estimators': best[3],
-                'subsample': best[4],
+                'subsample': best[3],
+                'parameter_3': best[4],
                 'metric_value': best[5]
             }, f)
+
+        print(f'Best configuration saved to {BEST_CONFIG_FILE}')
         
 
     def parse_hyperparameter_config(self, config_path="hyperparameter_tune_setting.yaml") -> Dict:
