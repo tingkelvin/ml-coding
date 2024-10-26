@@ -38,9 +38,9 @@ jobs:
       #   run: |
       #     python deployment_runner.py
 
-      # - name: Test end point 
-      #   run: |
-      #     python deployment_runner.py
+      - name: Test end point 
+        run: |
+          python deployment_runner.py
 
           
       # may need to setup NodeJS & Python3 on e.g. self-hosted
