@@ -7,7 +7,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Test Trainer Task
+      - name: Test trainer task
         working-directory: ./custom
         run: pip install -e . && python -m trainer.task --run_locally=True
         
@@ -34,9 +34,13 @@ jobs:
       #   run: |
       #     python hp_tunning_runner.py
       
-      - name: Deployment
-        run: |
-          python deployment_runner.py
+      # - name: Deployment
+      #   run: |
+      #     python deployment_runner.py
+
+      # - name: Test end point 
+      #   run: |
+      #     python deployment_runner.py
 
           
       # may need to setup NodeJS & Python3 on e.g. self-hosted
