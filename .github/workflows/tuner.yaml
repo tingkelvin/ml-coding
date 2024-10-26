@@ -11,24 +11,20 @@ jobs:
         working-directory: ./custom
         run: pip install -e . && python -m trainer.task --run_locally=True
         
-      # - name: Create tar file
-      #   run: |
-      #     tar cvf trainer_boston.tar custom
-
-      # - name: Compress tar file
-      #   run: |
-      #     gzip trainer_boston.tar
+      - name: Create tar file
+        run: |
+          tar cvf trainer_boston.tar custom
           
       - name: Google authenication
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GOOGLE_CREDENTIALS }}' # Replace with the name of your GitHub Actions secret
 
-      # - name: Upload folder
-      #   uses: 'google-github-actions/upload-cloud-storage@v2'
-      #   with:
-      #     path: 'trainer_boston.tar.gz'
-      #     destination: 'ml-coding'
+      - name: Upload folder
+        uses: 'google-github-actions/upload-cloud-storage@v2'
+        with:
+          path: 'trainer_boston.tar'
+          destination: 'ml-coding'
 
       - name: Install dependencies
         run: |
