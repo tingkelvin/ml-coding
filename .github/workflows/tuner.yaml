@@ -1,7 +1,7 @@
-name: Tunner-Test
+name: CI-CD
 on: [push]
 jobs:
-  tunner-test:
+  CI-CD:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,24 +30,14 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      # - name: Run hyperparameter tunning
-      #   run: |
-      #     python hp_tunning_runner.py
+      - name: Run hyperparameter tunning
+        run: |
+          python hp_tunning_runner.py
 
-      # - name: Deployment
-      #   run: |
-      #     python deployment_runner.py
+      - name: Deployment
+        run: |
+          python deployment_runner.py
 
       - name: Test end point 
         run: |
           python test_endpoint_prediction.py
-          
-      # may need to setup NodeJS & Python3 on e.g. self-hosted
-      # - uses: actions/setup-node@v3
-      #   with:
-      #     node-version: '16'
-      # - uses: actions/setup-python@v4
-      #   with:
-      #     python-version: '3.x'
-      # - name: Test Trainer Task
-      #   working-directory: ./custom
