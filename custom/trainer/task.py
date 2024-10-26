@@ -12,9 +12,7 @@ from google.cloud import storage
 import subprocess
 import sys
 
-SEED=123
-
-def get_data(test_size=0.2, random_state=SEED):
+def get_data():
     # Check Missing data
     if not args.run_locally:
         logging.info("Copy training data from gs bucket: {}, {}".format(args.dataset_X_train_url, args.dataset_y_train_url))
